@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+cm2network/steamcmd:latest
 
 MAINTAINER TuRzAm
 
@@ -13,25 +13,6 @@ ENV STEAMPORT1  8766
 ENV STEAMPORT2  8767
 # Game port
 ENV GAMEPORT   16261
-
-# Stop apt-get asking to get Dialog frontend
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install dependencies 
-RUN apt-get update && apt-get install -y \
-	curl \
-	lib32gcc1 \
-	default-jre \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
-
-
-# Run commands as the steam user
-RUN adduser \ 
-	--disabled-login \ 
-	--shell /bin/bash \ 
-	--gecos "" \ 
-	steam
 
 # Copy & rights to folders
 COPY update.sh /home/steam/update.sh
@@ -64,7 +45,6 @@ EXPOSE ${STEAMPORT1}
 EXPOSE ${STEAMPORT2}
 EXPOSE ${GAMEPORT}
 EXPOSE 27015
-
 
 # /home/steam/Zomboid : Server Data
 # /home/steam/projectzomboid : Server files & exe
