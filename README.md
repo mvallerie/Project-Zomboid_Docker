@@ -6,7 +6,8 @@ Docker build for project zomboid server.
 
 v1.0: First version for non steam server [now broken]  
 v1.1: New version for Project Zomboid Steam dedicated server  
-v1.2: Minor fixes (asking for frontend disabled, sed parse error removed)  
+v1.2: Minor fixes (asking for frontend disabled, sed parse error removed)
+v1.3: Now using [cm2network/steamcmd](https://hub.docker.com/r/cm2network/steamcmd) and `rcon.c` from [here](https://www.ryanschulze.net/archives/1052). Restoring support for non-steam servers.
 
 ## Usage
 `docker run -d -e SERVERNAME="MyServerName" -e ADMINPASSWORD="myadminpassword" -e RCON_PASSWORD="rconpassword"  -v /My/path/to/My/Config/and/data:/server-data -p 16261:16261 -p 16261:16261/udp -p 8766:8766 -p 8767:8767 -p 16262-16272:16262-16272 --name zomboid turzam/zomboid`
@@ -25,6 +26,8 @@ Admin password on your server
 + __RCON_PASSWORD__
 RCON Password (will be change in your ini file if there is no password set)
 Used to save when you stop the docker.
++ __NOSTEAM__
+If present, the server will start in non-steam mode. Don't forget to adapt your ini configuration to make that work.
 
 ## Volumes
 + __/server-data__

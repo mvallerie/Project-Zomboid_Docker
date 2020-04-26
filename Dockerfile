@@ -1,4 +1,4 @@
-cm2network/steamcmd:latest
+FROM cm2network/steamcmd:latest
 
 MAINTAINER TuRzAm
 
@@ -14,9 +14,18 @@ ENV STEAMPORT2  8767
 # Game port
 ENV GAMEPORT   16261
 
+USER root
+
+# Compiling rcon.c
+RUN apt-get update && apt-get install -y gcc
+COPY ./rcon.c /home/steam/rcon.c
+RUN gcc -o /home/steam/rcon /home/steam/rcon.c
+RUN apt-get remove -y --purge gcc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy & rights to folders
 COPY update.sh /home/steam/update.sh
-COPY rcon /home/steam/rcon
 
 RUN chmod 777 /home/steam/update.sh
 RUN chmod 777 /home/steam/rcon
@@ -26,13 +35,7 @@ RUN mkdir -p /home/steam/projectzomboid && chown -R steam /home/steam/projectzom
 RUN ln -s /home/steam/projectzomboid /server-files && chown -R steam /server-files
 RUN ln -s /home/steam/Zomboid /server-data && chown -R steam /server-data
 
-USER steam 
-
-# download steamcmd
-RUN mkdir /home/steam/steamcmd &&\ 
-	cd /home/steam/steamcmd &&\ 
-	curl http://media.steampowered.com/installer/steamcmd_linux.tar.gz | tar -vxz 
-
+USER steam
 
 # First run is on anonymous to download the app
 RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit

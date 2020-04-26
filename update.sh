@@ -26,9 +26,14 @@ INIFILE="/home/steam/Zomboid/Server/${SERVERNAME}.ini"
 sed -i -e s/RCONPassword=[[:space:]]/RCONPassword=${RCON_PASSWORD}/ $INIFILE
 
 
+if [ -z ${NOSTEAM} ]; then
+        echo -e "Launching server..."
+        /home/steam/projectzomboid/start-server.sh -servername ${SERVERNAME} -steamport1 ${STEAMPORT1} -steamport2 ${STEAMPORT2} -adminpassword ${ADMINPASSWORD} &
+else
+        echo -e "Launching server in non-steam mode..."
+        /home/steam/projectzomboid/start-server.sh -servername ${SERVERNAME} -nosteam -adminpassword ${ADMINPASSWORD} &
+fi
 
-echo -e "Launching server..."
-/home/steam/projectzomboid/start-server.sh -servername ${SERVERNAME} -steamport1 ${STEAMPORT1} -steamport2 ${STEAMPORT2} -adminpassword ${ADMINPASSWORD} &
 
 
 # save & exit when docker stop or Ctrl+C
